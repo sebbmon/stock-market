@@ -105,6 +105,18 @@ test-ha.bat
 ```
 This script calls the `/chaos` endpoint to shut down one of the replicas and immediately sends a follow-up request to demonstrate that the system is still fully operational.
 
+## Integration and Concurrency Tests
+
+The application includes comprehensive integration tests written in Java (`StockMarketIntegrationTest.java`) that verify the correctness of the business logic and the pessimistic locking mechanism.
+
+- **`shouldSuccessfullyBuyAndSellStock`**: Verifies the standard happy path where a user creates a wallet and buys, then sells a stock. It ensures that balances are correctly updated and the transaction is logged.
+- **`shouldReturn404WhenStockNotFound`**: Ensures the API returns `404 Not Found` when attempting to buy an unknown stock.
+- **`shouldReturn400WhenSellingWithoutStock`**: Ensures the API returns `400 Bad Request` when attempting to sell a stock that the user doesn't own.
+- **`testConcurrentBuysWithPessimisticLocking`**: A rigorous concurrency test that uses an `ExecutorService` to fire 40 simultaneous buy requests for the exact same stock. It guarantees that the `@Lock(LockModeType.PESSIMISTIC_WRITE)` mechanism works perfectly, preventing race conditions and ensuring exactly 40 stocks are sold without any negative balances or deadlocks.
+
+> [!IMPORTANT]
+> To run these Java integration tests locally from your IDE or Maven, you must expose the PostgreSQL port in your `docker-compose.yml` (add `ports: - "5432:5432"` to the `db` service definition). The tests require a running database instance to connect to.
+
 ---
 
 ## Architecture Decision Record (ADR)
