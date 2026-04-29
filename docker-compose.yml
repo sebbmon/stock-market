@@ -12,6 +12,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - stock_network
 
   app:
     build: .
@@ -23,21 +25,24 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # restart after chaos
     restart: always
     deploy:
       replicas: 3
+    networks:
+      - stock_network
 
   nginx:
     image: nginx:alpine
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "${APP_PORT}:80"
+      - "${APP_PORT:-8080}:80"
     depends_on:
       - app
     restart: always
+    networks:
+      - stock_network
 
 networks:
-  default:
+  stock_network:
     name: stock_network
