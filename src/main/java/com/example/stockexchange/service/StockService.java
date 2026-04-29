@@ -96,7 +96,9 @@ public class StockService {
 
     @Transactional(readOnly = true)
     public Integer getWalletStockQuantity(String walletId, String stockName) {
-        return walletStockRepository.findByWalletIdAndStockName(walletId, stockName)
+        return walletStockRepository.findByWalletId(walletId).stream()
+                .filter(ws -> ws.getStockName().equals(stockName))
+                .findFirst()
                 .map(WalletStock::getQuantity)
                 .orElse(null);
     }
