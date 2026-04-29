@@ -50,18 +50,25 @@ stock-exchange/
 
 ## How to Run
 
-1. Make sure your chosen port and `5432` are free.
-2. Run the provided start script with your desired port:
+1. Clone the repository and navigate to the project directory:
+   ```bash
+   git clone https://github.com/sebbmon/stock-market.git
+   cd stock-market
+   ```
+2. Make sure your chosen port is free.
+3. Run the provided start script with your desired port:
 
 ### On Linux/macOS
 ```bash
 chmod +x start.sh
-./start.sh 8080
+./start.sh <PORT>
+# Example: ./start.sh 8080
 ```
 
 ### On Windows
 ```cmd
-start.bat 8080
+start.bat <PORT>
+# Example: start.bat 8080
 ```
 
 The service will be available at `http://localhost:8080` (or whichever port you provided).
