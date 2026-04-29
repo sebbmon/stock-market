@@ -66,7 +66,7 @@ chmod +x start.sh
 ```
 
 ### On Windows
-```cmd
+```bash
 start.bat <PORT>
 # Example: start.bat 8080
 ```
